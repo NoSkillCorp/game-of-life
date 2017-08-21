@@ -1,0 +1,15 @@
+.cell {
+  height: 24px;
+  width: 24px;
+  line-height:24px;
+  border: 1px solid #333;
+}
+
+.cellContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.cellRow {
+  display: flex;
+}
