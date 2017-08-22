@@ -13,7 +13,7 @@ class navigation extends React.Component {
       <NavItem eventKey={1} onClick={() => this.handleClick(1)}><Glyphicon glyph="backward" /></NavItem>
       <NavItem eventKey={2} onClick={() => this.handleClick(2)}><Glyphicon glyph="stop" /></NavItem>
       <NavItem eventKey={3} onClick={() => this.handleClick(3)}><Glyphicon glyph="play" /></NavItem>
-      <NavItem eventKey={4} onClick={() => this.handleClick(4)}><Glyphicon glyph="forward" /></NavItem>
+      <NavItem eventKey={4} onClick={() => this.props.next()}><Glyphicon glyph="forward" /></NavItem>
     </Nav>
     )
   }

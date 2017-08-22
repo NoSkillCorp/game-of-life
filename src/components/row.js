@@ -18,7 +18,7 @@ class Row extends React.Component {
 
   renderCells() {
     let cellsGrid = []
-    for(let i = 0; i < this.state.size; i++) {
+    for(let i = 1; i < this.state.size - 1; i++) {
       cellsGrid.push(
         <Cell
           alive={this.props.row[i]}

@@ -5,6 +5,6 @@ import './index.css';
 import Layout from './components/layout'
 
 ReactDOM.render(
-  <Layout title="Game Of Life Online !" />,
+  <Layout />,
   document.getElementById('root')
 );
