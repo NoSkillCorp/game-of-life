@@ -13,3 +13,11 @@
 .cellRow {
   display: flex;
 }
+
+.alive {
+  background-color: green;
+}
+
+.nav {
+  padding-left: 45%;
+}

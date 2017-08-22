@@ -1,25 +1,11 @@
 import React from 'react';
 
 class Cell extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      alive : 'dead'
-    }
-  }
-
-  handleClick() {
-    this.setState({
-      alive: this.state.alive === 'dead' ? 'alive' : 'dead'
-    })
-  }
-
   render() {
     return (
       <div
-        className={'cell ' + this.state.alive}
-        onClick={() => this.handleClick()}
+        className={'cell ' + (this.props.alive === 1 ? 'alive' : 'dead')}
+        onClick={() => this.props.click()}
         >
       </div>    );
   }

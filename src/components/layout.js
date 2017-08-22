@@ -1,7 +1,6 @@
 import React from 'react'
 import Game from './game'
 import Navigation from './navigation'
-import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import { Grid, Row } from 'react-bootstrap'
 
 class Layout extends React.Component {
