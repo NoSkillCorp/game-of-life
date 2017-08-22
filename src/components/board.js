@@ -29,15 +29,17 @@ class Board extends React.Component {
   }
 
   async handleNext() {
-    let newGrid = this.initGrid()
-    for (let i = 1; i < newGrid.length - 1; i++) {
-      for (let j = 1; j < newGrid[i].length - 1; j++) {
+    let newGrid = [];
+    for (let i = 0; i < this.state.size; i++) {
+      let newColumn = []
+      for (let j = 0; j < this.state.size; j++) {
         if (this.shouldILive(i,j)) {
-          console.log(newGrid.join('\n')+'\n\n')
-          newGrid[i][j] = 1
-          console.log(newGrid.join('\n')+'\n\n')
+          newColumn.push(1)
+        } else {
+          newColumn.push(0)
         }
       }
+      newGrid.push(newColumn)
     }
 
     await this.setState({
@@ -58,21 +60,45 @@ class Board extends React.Component {
   }
 
   sumNeighbors(i,j) {
-    return (
-      this.state.grid[i-1][j-1]
-      + this.state.grid[i][j-1]
-      + this.state.grid[i-1][j]
-      + this.state.grid[i-1][j+1]
-      + this.state.grid[i+1][j]
-      + this.state.grid[i][j+1]
-      + this.state.grid[i+1][j+1]
-      + this.state.grid[i+1][j-1]
-    )
+    let sum = 0
+    if (i !== 0 && j !== 0) {
+      sum += this.state.grid[i-1][j-1]
+    }
+
+    if (i !== this.state.size - 1 && j !== this.props.size - 1) {
+      sum += this.state.grid[i+1][j+1]
+    }
+
+    if (i !== 0 && j !== this.props.size - 1) {
+      sum += this.state.grid[i-1][j+1]
+    }
+
+    if (i !== this.props.size - 1 && j !== 0) {
+      sum += this.state.grid[i+1][j-1]
+    }
+
+    if (i !== 0) {
+      sum += this.state.grid[i-1][j]
+    }
+
+    if (j !== 0) {
+      sum += this.state.grid[i][j-1]
+    }
+
+    if (j !== this.props.size - 1) {
+      sum += this.state.grid[i][j+1]
+    }
+
+    if (i !== this.props.size - 1) {
+      sum += this.state.grid[i+1][j]
+    }
+
+    return sum
   }
 
   renderCells() {
     let cellsGrid = []
-    for(let i = 1; i < this.state.size-1; i++) {
+    for(let i = 0; i < this.state.size; i++) {
       cellsGrid.push(
         <CellRow
           click={async (row) => await this.handleClick(i,row)}

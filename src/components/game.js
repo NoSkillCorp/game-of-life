@@ -5,7 +5,7 @@ class Game extends React.Component {
   render() {
     return (
       <div>
-        <Board size="10" />
+        <Board size="75" />
       </div>
     );
   }
