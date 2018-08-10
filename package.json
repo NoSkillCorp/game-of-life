@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://noskillcorp.github.io/game-of-life/",
   "dependencies": {
     "bootstrap": "^3.3.7",
     "react": "^15.6.1",
