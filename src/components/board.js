@@ -1,13 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CellRow from './row';
 import Navigation from './navigation';
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
+    const { size } = this.props;
     this.state = {
       play: false,
-      size: this.props.size ? parseInt(this.props.size, 10) : 10,
+      size: size ? parseInt(size, 10) : 10,
     };
 
     this.state = {
@@ -17,11 +19,13 @@ class Board extends React.Component {
   }
 
   initGrid() {
-    return Array(this.state.size).fill(Array(this.state.size).fill(0));
+    const { size } = this.state;
+    return Array(size).fill(Array(size).fill(0));
   }
 
   async handleClick(i, row) {
-    const newGrid = [...this.state.grid];
+    const { grid } = this.state;
+    const newGrid = [...grid];
     newGrid[i] = row;
     await this.setState({
       grid: newGrid,
@@ -29,8 +33,9 @@ class Board extends React.Component {
   }
 
   async run() {
+    const { play } = this.state;
     this.handleNext();
-    if (this.state.play) {
+    if (play) {
       setTimeout(this.run.bind(this), 10);
     }
   }
@@ -45,10 +50,11 @@ class Board extends React.Component {
   }
 
   async handleNext() {
+    const { size } = this.state;
     const newGrid = [];
-    for (let i = 0; i < this.state.size; i++) {
+    for (let i = 0; i < size; i += 1) {
       const newColumn = [];
-      for (let j = 0; j < this.state.size; j++) {
+      for (let j = 0; j < size; j += 1) {
         if (this.shouldILive(i, j)) {
           newColumn.push(1);
         } else {
@@ -64,11 +70,12 @@ class Board extends React.Component {
   }
 
   shouldILive(i, j) {
+    const { grid } = this.state;
     const neighbors = this.sumNeighbors(i, j);
     if (neighbors === 3) {
       return true;
     }
-    if (this.state.grid[i][j] === 1 && neighbors === 2) {
+    if (grid[i][j] === 1 && neighbors === 2) {
       return true;
     }
 
@@ -76,52 +83,54 @@ class Board extends React.Component {
   }
 
   sumNeighbors(i, j) {
+    const { size, grid } = this.state;
     let sum = 0;
     if (i !== 0 && j !== 0) {
-      sum += this.state.grid[i - 1][j - 1];
+      sum += grid[i - 1][j - 1];
     }
 
-    if (i !== this.state.size - 1 && j !== this.props.size - 1) {
-      sum += this.state.grid[i + 1][j + 1];
+    if (i !== size - 1 && j !== size - 1) {
+      sum += grid[i + 1][j + 1];
     }
 
-    if (i !== 0 && j !== this.props.size - 1) {
-      sum += this.state.grid[i - 1][j + 1];
+    if (i !== 0 && j !== size - 1) {
+      sum += grid[i - 1][j + 1];
     }
 
-    if (i !== this.props.size - 1 && j !== 0) {
-      sum += this.state.grid[i + 1][j - 1];
+    if (i !== size - 1 && j !== 0) {
+      sum += grid[i + 1][j - 1];
     }
 
     if (i !== 0) {
-      sum += this.state.grid[i - 1][j];
+      sum += grid[i - 1][j];
     }
 
     if (j !== 0) {
-      sum += this.state.grid[i][j - 1];
+      sum += grid[i][j - 1];
     }
 
-    if (j !== this.props.size - 1) {
-      sum += this.state.grid[i][j + 1];
+    if (j !== size - 1) {
+      sum += grid[i][j + 1];
     }
 
-    if (i !== this.props.size - 1) {
-      sum += this.state.grid[i + 1][j];
+    if (i !== size - 1) {
+      sum += grid[i + 1][j];
     }
 
     return sum;
   }
 
   renderCells() {
+    const { size, grid } = this.state;
     const cellsGrid = [];
-    for (let i = 0; i < this.state.size; i++) {
+    for (let i = 0; i < size; i += 1) {
       cellsGrid.push(
         <CellRow
           click={async row => this.handleClick(i, row)}
           subkey={`R${i.toString()}`}
           key={`R${i.toString()}`}
-          size={this.state.size}
-          row={this.state.grid[i]}
+          size={size}
+          row={grid[i]}
         />,
       );
     }
@@ -143,5 +152,9 @@ class Board extends React.Component {
     );
   }
 }
+
+Board.propTypes = {
+  size: PropTypes.number.isRequired,
+};
 
 export default Board;

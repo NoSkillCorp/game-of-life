@@ -1,41 +1,49 @@
-import React from 'react'
-import Cell from './cell'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Cell from './cell';
 
-class Row extends React.Component {
-
+class Row extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+    const { size } = this.props;
     this.state = {
-      size: this.props.size ? parseInt(this.props.size) : 10,
-    }
+      size: size ? parseInt(size, 10) : 10,
+    };
   }
 
   hancleClick(index) {
-    let newRow = [...this.props.row]
-    newRow[index] = newRow[index] === 0 ? 1 : 0
-    return newRow
+    const { row } = this.props;
+    const newRow = [...row];
+    newRow[index] = newRow[index] === 0 ? 1 : 0;
+    return newRow;
   }
 
   renderCells() {
-    let cellsGrid = []
-    for(let i = 0; i < this.state.size; i++) {
+    const { size } = this.state;
+    const { row, subkey, click } = this.props;
+    const cellsGrid = [];
+    for (let i = 0; i < size; i += 1) {
       cellsGrid.push(
         <Cell
-          alive={this.props.row[i]}
-          key={this.props.subkey + 'C' + i.toString()}
-          click={() => this.props.click(this.hancleClick(i))}
-        />)
+          alive={row[i]}
+          key={`${subkey}C${i.toString()}`}
+          click={() => click(this.hancleClick(i))}
+        />,
+      );
     }
-    return cellsGrid
+    return cellsGrid;
   }
 
   render() {
-    return (
-      <div className="cellRow">
-        {this.renderCells()}
-      </div>
-    );
+    return <div className="cellRow">{this.renderCells()}</div>;
   }
 }
+
+Row.propTypes = {
+  size: PropTypes.number.isRequired,
+  row: PropTypes.arrayOf(PropTypes.number).isRequired,
+  subkey: PropTypes.string.isRequired,
+  click: PropTypes.func.isRequired,
+};
 
 export default Row;
